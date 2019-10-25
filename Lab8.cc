@@ -3,40 +3,60 @@
 #include <cstdlib>
 #include <string>
 #include <fstream>
+#include <cctype>
 using namespace std;
 
-void encryptTheFile();
-void obtainKeyValue();
-bool displayMenu();
+double decryptTheFile(double &key, ifstream &inStream, ofstream &outStream);
+bool encryptTheFile(double &key, ifstream &inStream, ofstream &outStream);
+bool obtainKeyValue(double &key);
+bool displayMenu(double &key);
 int main(int argc, char const *argv[]){
 
     int choice;
-    int key;
+    double key;
     key = 3; //default
 
     do{
-        displayMenu();
+
+        displayMenu(key);                          // call the displayMenu function to display the menu
         cout << "-Enter in a value from top to bottom unless you wish to quit the program. :";
         cin >> choice;
-    if(choice == 1){
-        obtainKeyValue();
-        cin >> key;                     // call the set key function and assign to key
-    }else if (choice == 2){
+
+    if(choice == 1){                            // call the set key function and assign to key
+
+        cout << obtainKeyValue(key) << endl;
+
+    }else if (choice == 2){                    //call the encryption function
 
         ifstream inStream;
         ofstream outStream;
-        inStream.open(data.txt);
-        outStream.open(output.txt);
+        inStream.open("data.txt");
+        outStream.open("output.txt");
 
         if(inStream.fail() || outStream.fail()){
 
             cout << "-There is an error opening the input or output of the file." << endl;
             exit(0);
         }
-        void encryptTheFile();             //call the encryption function
+        encryptTheFile(key, inStream, outStream);
+        cout << "*The file is now encrypted" << endl;
+        
 
-    }else if (choice == 3){
-                                        //call the decryption function
+    }else if (choice == 3){                                 //call the decryption function
+
+        ifstream inStream;
+        ofstream outStream;
+        inStream.open("output.txt");
+        outStream.open("output2.txt");
+
+        if(inStream.fail() || outStream.fail()){
+
+            cout << "-There is an error opening the input or output of the file." << endl;
+            
+        }
+        decryptTheFile(key, inStream, outStream);
+    
+
     }
     }while(choice != 4);
 
@@ -46,10 +66,10 @@ int main(int argc, char const *argv[]){
 }
 
 
-bool displayMenu(){
+bool displayMenu(double &key){
 
     cout << "-Set the shift key value (default is 3)" << endl;
-    cout << "*For a shift key value enter an integer starting at 1 and 4 being the last option, entering 4 will end the program*" << endl;
+    cout << "*The shift key is set to move " << key << " to the right*" << endl;
     cout << "-Encrypt a file" << endl;
     cout << "-Decrypt a file" << endl;
     cout << "-Quit" << endl;
@@ -57,22 +77,60 @@ bool displayMenu(){
 return 'X';
 }
 
-void obtainKeyValue(){
+bool obtainKeyValue(double &key){
 
-    cout << "-Enter a shift key value between 1 and 10 to Encrypt and Decrypt";
+    double keyLine = 0;
+    cout << "-Enter a shift key value between 1 and 10 to Encrypt and Decrypt: ";
+    cin >> keyLine;
+    key = keyLine;
+
+    return key;
 }
 
-void encryptTheFile(ifstream &inStream, ofstream &outStream){
+bool encryptTheFile(double &key, ifstream &inStream, ofstream &outStream){
 
-    string in_file;
+    char ch;
+    int length = 0;
+    string FileName;
+    string FileName2;
 
-    cout << "-Enter an input file name.";
-    cin >> data.txt;
+    cout << "-Please enter an input file name: ";
+    cin >> FileName;
+    cout << endl;
+    cout << "-Please enter an output file name: ";
+    cin >> FileName2;
+    cout << endl;
 
-    while(!inStream.eof()){
-
-        
+    while(inStream.eof() == 0){
+        length++;
+        inStream >> ch;
+        ch = ch + key;
+        outStream << ch;
     }
+    return ch;
 
+}
+
+double decryptTheFile(double &key, ifstream &inStream, ofstream &outStream){
+
+    char why;
+    int length = 0;
+    string FileName3;
+    string FileName4;
+
+    cout << "-Please enter an input file name: ";
+    cin >> FileName3;
+    cout << endl;
+    cout << "-Please enter an output file name: ";
+    cin >> FileName4;
+    cout << endl;
+
+    while(inStream.eof() == 0){
+        length++;
+        inStream >> why;
+        why = why - key;
+        outStream << why;
+    }
+    return why;
 
 }
