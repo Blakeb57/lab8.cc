@@ -68,11 +68,11 @@ int main(int argc, char const *argv[]){
 
 bool displayMenu(double &key){
 
-    cout << "-Set the shift key value (default is 3)" << endl;
+    cout << "1. -Set the shift key value (default is 3)" << endl;
     cout << "*The shift key is set to move " << key << " to the right*" << endl;
-    cout << "-Encrypt a file" << endl;
-    cout << "-Decrypt a file" << endl;
-    cout << "-Quit" << endl;
+    cout << "2. -Encrypt a file" << endl;
+    cout << "3. -Decrypt a file" << endl;
+    cout << "4. -Quit" << endl;
 
 return 'X';
 }
